@@ -1,0 +1,104 @@
+﻿@model IEnumerable<UsuarioModel>
+@{
+    ViewData["Title"] = "Listado de Agencias";
+}
+
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<div class="row">
+    <div action="offset-12 col-3 mb-3">
+
+        <div class="card border">
+            @* CARD HEADER *@
+            <div class="card-header bg-light">
+                <div class="row">
+                    <div class="col">
+                        <h3>
+                            <strong><i class="bi bi-people"></i> Listado de usuarios</strong>
+                        </h3>
+                    </div>
+                    <div class="col">
+                        <h3 class="text-white text-end">
+                            <a asp-action="Crear" asp-controller="Usuario" class="btn btn-success">
+                                <i class="bi bi-file-plus-fill"></i> Agregar
+                            </a>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            @* CARD HEADER *@
+            <div class="card-body">
+                <div class="table-responsive">
+                    @if (Model != null)
+                    {
+                        <table class="table table-borderless table-striped table-light" id="tblResponsive" width="100%" cellspacing="0">
+                            <thead>
+                                <tr class="bg-primary text-black">
+                                    <th class="text-center">Código</th>
+                                    <th class="text-center">Correo</th>
+                                    <th class="text-center">Estatus</th>
+                                    <th class="text-center">Fecha</th>
+                                    <th class="text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr onclick="window.location.href='@Url.Action("Editar", "Usuario", new { codigoRegistro = item.codigoUsuario })';">
+                                        @* <tr> *@
+                                        @* <td><a href="javascript:listadoLinkEditar('Agencia', 'Editar', 'codigoRegistro', @item.codigoAgencia)" class="text-decoration-none">@item.codigoAgencia</a> </td> *@
+                                        <td role="button">@item.codigoUsuario</td>
+                                        <td role="button">@item.correo</td>
+
+                                        @if (item.estatus == 1)
+                                        {
+                                            <td role="button"><span class="text-success"> Activo</span></td>
+                                        }
+                                        else if (item.estatus == 2)
+                                        {
+                                            <td role="button"><span class="text-danger"> Inactivo</span></td>
+                                        }
+                                        @* else if (item.estatus == 3)
+                                {
+                                <td><span class="text-danger"><i class="bi bi-x-circle"></i> Eliminado</span></td>
+                                } *@
+                                        else
+                                        {
+                                            <td role="button"><span class="text-muted"><i class="bi bi-ban"></i> No cuenta con un estatus</span></td>
+                                        }
+                                        <td role="button">@item.fechaRegistro</td>
+                                        <td>
+                                            <button class="btn btn-outline-danger" onclick="event.stopPropagation(); eliminarRegistro(@item.codigoUsuario, '@item.correo', 'Usuario','EditarEliminar')">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+
+                    }
+                    else
+                    {
+                        <p>No hay registros</p>
+                    }
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            formatoTablaResponsive();
+        });
+    </script>
+
+}
+

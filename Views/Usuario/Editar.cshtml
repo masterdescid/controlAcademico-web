@@ -1,0 +1,123 @@
+﻿@model UsuarioModel
+
+@{
+    ViewData["Title"] = "Editar Agencia";
+    var javaScriptValor = ViewBag?.javaScript;
+    var mensajeError = ViewBag?.mensajeError;
+}
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<form asp-controller="Usuario" asp-action="Editar" class="pb-5">
+
+    <div class="row mt-5">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <div class="card mb-4">
+                @* CARD HEADER *@
+                <div class="card-header bg-light">
+                    <h3>
+                        <strong><i class="bi bi-people"></i> Editar usuario</strong>
+                    </h3>
+
+                </div>
+                @* CARD HEADER *@
+                <div class="card-body">
+                    <div>
+                        <div class="mt-2 mb-4">
+                            <h5>
+                                Editar agencia
+                            </h5>
+                            <span class="text-danger fs-6">
+                                Todos los campos marcados con (*) son obligatorios.
+                            </span>
+                            <hr />
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-xl-2 mb-3">
+                                <label asp-for="codigoUsuario"></label>
+                                <input asp-for="codigoUsuario" class="form-control" readonly>
+                            </div>
+                            <div class="col-12 col-md-12 col-xl-4 mb-3">
+                                <label asp-for="codigoRol"></label><span class="text-danger">*</span>
+                                <select asp-for="codigoRol" class="select2 form-select" data-allow-clear="true">
+                                    <option value="">Seleccione un rol</option>
+                                    @if (ViewBag!.listadoRoles != null)
+                                    {
+                                        foreach (var rol in ViewBag.listadoRoles)
+                                        {
+                                            <option value="@rol.codigoRol">@rol.nombreRol</option>
+                                        }
+                                    }
+                                </select>
+                                <span asp-validation-for="codigoRol" class="text-danger"></span>
+                            </div>
+
+
+
+                            <div class="col-12 col-md-12 col-xl-6 mb-3">
+                                <label asp-for="correo"></label><span class="text-danger">*</span>
+                                <input asp-for="correo" class="form-control" placeholder="Escriba el nombre de agencia">
+                                <span asp-validation-for="correo" class="text-danger"></span>
+                            </div>
+                            <div class="col-12 col-md-12 col-xl-6 mb-3">
+                                <label asp-for="clave"></label><span class="text-danger">*</span>
+                                <input asp-for="clave" type="password" class="form-control" placeholder="Escriba su nueva contraseña" value="">
+                                <span asp-validation-for="clave" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-12 col-md-12 col-xl-6 mb-3">
+                                <label asp-for="fechaRegistro"></label><span class="text-danger">*</span>
+                                <input asp-for="fechaRegistro" class="form-control" placeholder="Escriba el nombre de agencia">
+                                <span asp-validation-for="fechaRegistro" class="text-danger"></span>
+                            </div>
+                            <div class="col-12 col-md-12 col-xl-6 mb-3">
+                                <label asp-for="estatus"></label><span class="text-danger">*</span>
+                                <select asp-for="estatus" class="select2 form-select" data-allow-clear="true">
+                                    <option value="1">Activo</option>
+                                    <option value="2">Inactivo</option>
+                                </select>
+                                <span asp-validation-for="estatus" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row pt-3">
+                        <div class="col-6 col-md-6 mb-3 text-start">
+                            <a class="btn btn-outline-secondary" asp-action="Index"><i class="bi bi-caret-left"></i> Regresar</a>
+                        </div>
+                        <div class="col-6 col-md-6 mb-3 text-end">
+                            <button id="btnGuardar" type="submit" class="btn btn-primary"><i class="bi bi-floppy-fill"></i> Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+
+        @javaScriptValor;
+
+        function ejecutarToast() {
+            toast('success', 3000, 'top-end', 'El registro se guardó.');
+            setTimeout(function () {
+                window.location.href = `/Usuario/Index`;
+            }, 3000);
+
+        }
+
+        function ejecutarToastWarning() {
+            toast("warning", 5000, 'center', '@Html.Raw(Html.Encode(mensajeError))');
+        }
+
+    </script>
+}
+
