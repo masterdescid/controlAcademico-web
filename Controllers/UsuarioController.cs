@@ -150,6 +150,7 @@ namespace controlAcademico_web.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            ViewData["HideNavbar"] = true;
             return View();
         }
 
